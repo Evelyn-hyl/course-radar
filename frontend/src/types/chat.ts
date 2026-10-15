@@ -1,10 +1,10 @@
 export type Citation = {
   id: string;
   label: string;
-  documentId?: string;
-  pageNumber?: number;
-  equationLabel?: string;
-  isDemo: boolean;
+  documentId: string;
+  pageStart: number;
+  pageEnd: number;
+  isDemo?: boolean;
 };
 
 export type ChatMessage = {
@@ -21,7 +21,7 @@ export type RequestState = 'idle' | 'acknowledging' | 'loading' | 'success' | 'e
 export type ChatResponse = {
   content: string;
   citations: Citation[];
-  isDemo: true;
+  isDemo?: boolean;
 };
 
 export type ChatService = {

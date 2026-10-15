@@ -7,7 +7,7 @@ import { RequestAcknowledgment } from '../components/RequestAcknowledgment';
 import { WelcomeState } from '../components/WelcomeState';
 import { useChat } from '../hooks/useChat';
 import { useHealth } from '../hooks/useHealth';
-import { mockChatService } from '../services/chatAdapter';
+import { courseChatService } from '../services/chatAdapter';
 
 const SUGGESTIONS = [
   'Walk through an example we learned in class that uses multinomial coefficients.',
@@ -16,7 +16,7 @@ const SUGGESTIONS = [
 
 export function App() {
   const healthStatus = useHealth();
-  const { messages, requestState, acknowledgment, errorMessage, sendMessage, retry } = useChat(mockChatService);
+  const { messages, requestState, acknowledgment, errorMessage, sendMessage, retry } = useChat(courseChatService);
   const [selectedPrompt, setSelectedPrompt] = useState<string | null>(null);
   const hasConversation = messages.length > 0;
   const isPending = requestState === 'acknowledging' || requestState === 'loading';

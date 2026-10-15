@@ -1,33 +1,40 @@
-import type { ChatResponse, ChatService } from '../types/chat';
+import type { AnswerCitationResponse } from './api';
+import { askCourseQuestion } from './api';
+import type { ChatResponse, ChatService, Citation } from '../types/chat';
 
-const PREVIEW_RESPONSE: ChatResponse = {
-  content: [
-    '### A preview of the response experience',
-    '',
-    'CourseRadar will use your uploaded materials to build a grounded answer here. A response can include readable mathematics such as',
-    '',
-    '$$P(A \\cap B) = P(A)P(B \\mid A)$$',
-    '',
-    '**Retrieval is not connected in M0**, so this preview does not claim to answer your question or cite real course evidence.',
-  ].join('\n'),
-  citations: [{ id: 'demo-source', label: 'Demo citation · Not a real source', isDemo: true }],
-  isDemo: true,
-};
 
-const MOCK_RESPONSE_DELAY_MS = 900;
+const COURSE_ID = import.meta.env.VITE_COURSE_ID as string | undefined;
 
-export const mockChatService: ChatService = {
-  sendMessage: (_prompt: string, signal?: AbortSignal) =>
-    new Promise<ChatResponse>((resolve, reject) => {
-      const timeoutId = window.setTimeout(() => resolve(PREVIEW_RESPONSE), MOCK_RESPONSE_DELAY_MS);
 
-      signal?.addEventListener(
-        'abort',
-        () => {
-          window.clearTimeout(timeoutId);
-          reject(new DOMException('Request aborted.', 'AbortError'));
-        },
-        { once: true },
-      );
-    }),
+function formatPageLabel(citation: AnswerCitationResponse): string {
+  if (citation.page_start === citation.page_end) {
+    return `p. ${citation.page_start}`;
+  }
+  return `pp. ${citation.page_start}–${citation.page_end}`;
+}
+
+
+function mapCitation(citation: AnswerCitationResponse): Citation {
+  return {
+    id: citation.chunk_id,
+    label: `${citation.document_title} · ${formatPageLabel(citation)}`,
+    documentId: citation.document_id,
+    pageStart: citation.page_start,
+    pageEnd: citation.page_end,
+  };
+}
+
+
+export const courseChatService: ChatService = {
+  async sendMessage(prompt: string, signal?: AbortSignal): Promise<ChatResponse> {
+    if (!COURSE_ID) {
+      throw new Error('VITE_COURSE_ID is not configured.');
+    }
+
+    const response = await askCourseQuestion(COURSE_ID, prompt, signal);
+    return {
+      content: response.answer,
+      citations: response.citations.map(mapCitation),
+    };
+  },
 };

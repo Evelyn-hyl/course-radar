@@ -16,7 +16,7 @@ export function WelcomeState({ suggestions, onSelectSuggestion }: WelcomeStatePr
         What would you like to explore?
       </h1>
       <p className="mx-auto mt-3 max-w-lg text-sm leading-6 text-primary/65 sm:text-base">
-        Ask a question about your course. Source-grounded retrieval will arrive in the next milestones.
+        Ask a question and get an answer grounded in your uploaded course materials.
       </p>
       <div className="mt-8 grid gap-3 sm:grid-cols-2">
         {suggestions.map((suggestion) => (
