@@ -86,8 +86,8 @@ class IngestedChunkResponse(BaseModel):
 
 
 class IngestionPreviewResponse(BaseModel):
-    """Temporary response used before document persistence is implemented."""
-
+    document_id: UUID
+    status: DocumentStatus
     page_count: int
     chunk_count: int
     chunks: list[IngestedChunkResponse]

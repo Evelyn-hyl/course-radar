@@ -22,7 +22,7 @@ class ConceptType(StrEnum):
     EQUATION = "equation"
     COROLLARY = "corollary"
 
-# For ingestion
+# [TODO] Needs refactoring
 class ChunkContentType(StrEnum):
     DEFINITION = "definition"
     THEOREM = "theorem"

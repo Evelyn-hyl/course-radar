@@ -1,11 +1,8 @@
 {
-  "include": [
-    "backend/app",
-    "backend/tests"
-  ],
+  "include": ["backend/app", "backend/tests"],
   "typeCheckingMode": "basic",
-  "strict": [
-    "backend/app"
-  ],
+  "strict": ["backend/app"],
+  "venvPath": "backend",
+  "venv": ".venv",
   "pythonVersion": "3.12"
 }

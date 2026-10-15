@@ -7,3 +7,7 @@ pymupdf4llm==1.28.2
 python-multipart>=0.0.20,<1.0
 alembic>=1.17,<2.0
 pgvector>=0.5,<1.0
+python-dotenv==1.1.1
+sentence-transformers>=5.1,<6.0
+ftfy>=6.3,<7.0
+google-genai>=1.0,<2.0

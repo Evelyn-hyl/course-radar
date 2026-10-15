@@ -8,6 +8,8 @@ from typing import Protocol, cast
 
 import pymupdf4llm
 
+from app.ingestion.text_cleaner import clean_extracted_text
+
 
 class _PyMuPdf4Llm(Protocol):
     def to_markdown(
@@ -87,7 +89,7 @@ def _normalize_page_chunk(raw_chunk: object) -> DocumentChunk | None:
     if not isinstance(page_number, int) or isinstance(page_number, bool):
         raise PdfChunkingError("Page chunk is missing a valid page number.")
 
-    normalized_text = text.strip()
+    normalized_text = clean_extracted_text(text)
     
     if not normalized_text:
         return None

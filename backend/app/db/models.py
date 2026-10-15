@@ -8,8 +8,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
 from app.domain.documents import SourceType, DocumentStatus, ChunkContentType, ConceptType, ExampleConceptRelationship, VerificationStatus, ExtractionStatus
-
-EMBEDDING_DIMENSIONS = 1536
+from app.embeddings.constants import EMBEDDING_DIMENSIONS
 
 def enum_values(enum_type: type[PythonEnum]) -> list[str]:
     return [str(item.value) for item in enum_type]
@@ -121,7 +120,8 @@ class Chunk(Base):
         primary_key=True, default=uuid.uuid4
     )
     document_id: Mapped[uuid.UUID] = mapped_column(
-        ForeignKey("documents.id"), index=True
+        ForeignKey("documents.id", ondelete="CASCADE"),
+        index=True,
     )
     content_type: Mapped[ChunkContentType | None] = mapped_column(
         SqlEnum(
